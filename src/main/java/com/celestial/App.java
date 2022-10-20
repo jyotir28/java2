@@ -1,5 +1,6 @@
 package com.celestial;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -17,44 +18,30 @@ public class App
     {
         String lineRead;
         Scanner sc = new Scanner(System.in);
-        int growBy=3;
-        String[] lines = new String[growBy];
+        ArrayList<String> lines = new ArrayList<String>(100);
         App app = new App();
     	System.out.println("Enter VAT rate");
     	double vatRate = sc.nextDouble();
         try
         {
-            for(int x=0; (x<lines.length && prompt() && (lineRead= sc.next())!=null);x++)
+            while(prompt() && (lineRead= sc.next())!=null)
             {	
-                lines[x] = lineRead;
-            	System.out.println(lineRead);
-            	
-            	if(x == lines.length-1) {
-            		lines = Arrays.copyOf(lines, growBy+lines.length);
-            	}
             	if(lineRead.equalsIgnoreCase("quit"))
             		break;
+            	lines.add(lineRead);
+            	System.out.println(lineRead);
             }
             
         }catch( NoSuchElementException e )
         {}
-        int k=0;
-        double totalCost =0;
+
+        
+        double totalCost=0;
         for(String s:lines) {
-        	if(s.equalsIgnoreCase("quit")) {
-        		break;
-        	}
-        	k++;
+        	double temp= Double.parseDouble(s);
+        	totalCost=totalCost+temp;
         }
-       
-        
-        for(int i=0;i<k;i++) {
-        	double cost = Double.parseDouble(lines[i]);
-        	totalCost = totalCost+cost;
-        }
-        
-        System.out.println("totalCost " + totalCost);
-        
+        System.out.println(totalCost);
         double finalValue= 0;
         finalValue= app.calculateVAT(totalCost,vatRate);
         System.out.println("finalCost "+ finalValue);
